@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>every1.click</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        :root {
+            --primary-color: #00A884;
+            --secondary-color: #25D366;
+            --accent-color: #DCF8C6;
+            --text-color: #FFFFFF;
+            --background-color: #F0F0F0;
+            --button-hover-color: #007B68;
+            --heading-color: #075E54;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            background: url('https://img.freepik.com/premium-vector/bull-running-illustration-world-wildlife-day-one-line-art_718518-1683.jpg') no-repeat center center fixed;
+            background-size: 80% auto;
+            transition: background 2s ease-in-out;
+        }
+        .header {
+            background-color: rgba(0, 168, 132, 0.8); /* Slightly transparent */
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 36px;
+            color: var(--text-color);
+            text-align: left;
+            flex: 1;
+        }
+        .header nav {
+            flex: 2;
+            display: flex;
+            justify-content: center;
+        }
+        .header nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 20px;
+        }
+        .header nav ul li {
+            margin: 0;
+        }
+        .header nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        .header nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .buttons a {
+            text-decoration: none;
+            color: var(--text-color);
+            background-color: var(--secondary-color);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .buttons a.download {
+            background-color: var(--accent-color);
+        }
+        .buttons a:hover {
+            background-color: var(--button-hover-color);
+        }
+        .main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 60px);
+            padding: 20px;
+            position: relative;
+        }
+        .content-wrapper {
+            background: linear-gradient(120deg, var(--accent-color), var(--background-color));
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            padding: 40px 20px;
+            max-width: 400px;
+            margin: 20px;
+            text-align: center;
+            position: absolute;
+            bottom: 10%;
+            left: 10%;
+        }
+        .content-wrapper h2 {
+            color: var(--heading-color);
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        .content-wrapper p {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .image-container {
+            margin-top: 30px;
+        }
+        .image-container img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 50%;
+            right: 5%;
+            transform: translateY(-50%);
+            max-height: 80vh;
+        }
+	.bottom-right-image {
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            padding: 40px 20px;
+            max-width: 500px;
+            margin: 20px;
+            position: absolute;
+            bottom: 0%;
+            right: -5%;
+        }
+        .footer {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>every1.click</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="articles.html">Articles</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="privacy.html">Privacy Policy</a></li>
+            </ul>
+        </nav>
+        <div class="buttons">
+            <a href="https://s3.us-east-2.amazonaws.com/every1.click/%5BOCYRUS-win32-x64+-+Copy.zip" id="downloadLink" class="download" target="_blank">Download Now</a>
+            <a href="future2.html">Continue Online</a>
+		 <a href="https://www.youtube.com/shorts/tifZ2I6eZCc">Watch Video</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="content-wrapper">
+            <h2>Your ultimate tool for managing your screen space efficiently and effectively.</h2>
+            <p>Every1.click is the most democratic way to handle your digital content. Whether you're a professional or just getting started, our platform is designed to meet your needs.</p>
+        </div>
+<div class= "bottom-right-image">
+<img src="photo2.png" href="https://s3.us-east-2.amazonaws.com/every1.click/%5BOCYRUS-win32-x64+-+Copy.zip" alt="Description of the image" id="bottom-right-image">
+</div>
+    </div>
+
+    <div class="footer">
+        &copy; 2024 OCyrus. All rights reserved.
+    </div>
+
+    <script>
+        function sendDownloadRequest() {
+            fetch('https://every1.click/download')
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const downloadLink = document.getElementById('downloadLink');
+            
+            downloadLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                sendDownloadRequest();
+                window.location.href = downloadLink.href;
+            });
+        });
+    </script>
+</body>
+</html>

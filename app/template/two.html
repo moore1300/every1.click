@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Display and Cashout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: transparent;
+            color: #333;
+            margin: 0;
+            padding: 5px;
+            box-sizing: border-box;
+            overflow: hidden;
+            width: 500px;
+            height: 300px;
+            position: relative;
+        }
+        .banner {
+            background-color: #c8102e; /* Master Red */
+            color: #ffffff;
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 2;
+        }
+        .banner a {
+            color: #ffffff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        nav {
+            padding: 0px;
+            background-color: transparent;
+            border-bottom: none;
+            position: absolute;
+            top: 33px; /* Adjust to position below the banner */
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+            z-index: 1;
+        }
+        nav:hover {
+            opacity: 1;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin: 0 5px;
+        }
+        nav ul li a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 100%;
+            max-height: 100%;
+            overflow-y: auto;
+            background-color: transparent;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0);
+            margin-top: 30px;
+            position: relative;
+            padding: 10px;
+        }
+        .ad-container, .info {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .info {
+            display: flex;
+            flex-direction: row;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .info.expanded {
+            max-height: 80px; /* Ensure this value is enough to show the content */
+        }
+        .info div {
+            flex: 1;
+            margin: 0;
+            padding: 5px;
+            border-radius: 8px;
+            background-color: #f0f0f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0);
+            box-sizing: border-box;
+        }
+        .info div h2 {
+            margin: 0 0 4px;
+            font-size: 14px;
+            color: #007bff;
+        }
+        .info div p {
+            margin: 0;
+            font-size: 10px;
+            color: #333;
+        }
+        .info div p span {
+            font-weight: bold;
+            color: #28a745;
+        }
+        .info div:last-child {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 80%;
+            max-width: 300px;
+            text-align: center;
+            position: relative;
+        }
+        .modal-content input {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            color: #333;
+            font-size: 10px;
+        }
+        .donate-button {
+            background-color: #28a745;
+        }
+        .donate-button:hover {
+            background-color: #218838;
+        }
+        .close-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+        }
+        .close-button:hover {
+            color: #007bff;
+        }
+        .toggle-info-button {
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            display: block;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        Download the desktop version for a better experience: 
+        <a id="downloadLink" href="https://s3.us-east-2.amazonaws.com/every1.click/%5BOCYRUS-win32-x64+-+Copy.zip" target="_blank">Download Now</a>
+    </div>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="articles.html">Articles</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="ad-container" id="adContainer">
+            <div id="adContent"></div>
+        </div>
+
+        <div id="adUnit" class="ad-container">
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : 'd03668dc8371ee5725bb10432f941540',
+                    'format' : 'iframe',
+                    'height' : 60,
+                    'width' : 468,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="//www.topcreativeformat.com/d03668dc8371ee5725bb10432f941540/invoke.js"></script>
+        </div>
+
+        <img src="https://www.freeiconspng.com/uploads/information-icon-3.png" id="toggleInfoButton" class="toggle-info-button" alt="Toggle Info">
+
+        <div id="infoSection" class="info">
+            <div>
+                <h2 id="stopwatch">00:00:00</h2>
+                <p>Elapsed Time</p>
+            </div>
+            <div>
+                <h2><span id="adCounter">0</span></h2>
+                <p>Total Ads Watched</p>
+            </div>
+            <div>
+                <h2>$<span id="earningsDisplay">0.0000</span></h2>
+                <p>Total Earnings</p>
+            </div>
+            <div>
+                <button id="cashoutButton">Cashout</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="cashoutModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" id="closeCashoutModal">&times;</button>
+            <h2>Cashout</h2>
+            <input type="text" id="venmoUsername" placeholder="Enter your Venmo username">
+            <button id="submitCashout">Submit Cashout</button>
+            <button id="donateButton" class="donate-button">Donate to Charity</button>
+        </div>
+    </div>
+
+    <div id="emailModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" id="closeEmailModal">&times;</button>
+            <h2>Submit your email</h2>
+            <input type="email" id="emailInput" placeholder="Enter your email address">
+            <button id="submitEmail">Submit Email</button>
+        </div>
+    </div>
+
+  <script>
+    (function() {
+        const stopwatch = document.getElementById('stopwatch');
+        const adCounter = document.getElementById('adCounter');
+        const earningsDisplay = document.getElementById('earningsDisplay');
+        const infoSection = document.getElementById('infoSection');
+        const toggleInfoButton = document.getElementById('toggleInfoButton');
+        const cashoutButton = document.getElementById('cashoutButton');
+        const cashoutModal = document.getElementById('cashoutModal');
+        const closeCashoutModal = document.getElementById('closeCashoutModal');
+        const submitCashout = document.getElementById('submitCashout');
+        const donateButton = document.getElementById('donateButton');
+        const venmoUsername = document.getElementById('venmoUsername');
+        const emailModal = document.getElementById('emailModal');
+        const closeEmailModal = document.getElementById('closeEmailModal');
+        const submitEmail = document.getElementById('submitEmail');
+        const emailInput = document.getElementById('emailInput');
+        const downloadLink = document.getElementById('downloadLink');
+
+        let adCount = 0;
+        let earnings = 0;
+        let stopwatchInterval;
+        let elapsedTime = 0;
+        let lastUpdateTime = 0;
+
+        function startStopwatch() {
+            stopwatchInterval = setInterval(function() {
+                elapsedTime++;
+                const hours = Math.floor(elapsedTime / 3600);
+                const minutes = Math.floor((elapsedTime % 3600) / 60);
+                const seconds = elapsedTime % 60;
+                stopwatch.innerText = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                if (Math.floor(elapsedTime / 30) > lastUpdateTime) {
+                    lastUpdateTime = Math.floor(elapsedTime / 30);
+                    updateAdCounter();
+                }
+            }, 1000);
+        }
+
+        function toggleInfo() {
+            if (infoSection.classList.contains('expanded')) {
+                infoSection.classList.remove('expanded');
+            } else {
+                infoSection.classList.add('expanded');
+            }
+        }
+
+        function updateAdCounter() {
+            adCount++;
+            adCounter.innerText = adCount;
+            earnings = (adCount * 0.0016).toFixed(2);
+            earningsDisplay.innerText = earnings;
+	    refreshAd()
+        }
+
+        function sendDownloadRequest() {
+            fetch('https://every1.click/download')
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+        }
+
+        function sendSubmitRequest() {
+            const data = {
+                venmo_username: venmoUsername.value,
+                ads_watched: adCount,
+                elapsed_time: elapsedTime,
+                amount_earned: parseFloat(earnings)
+            };
+
+            fetch('https://every1.click/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('Cashout request submitted successfully!');
+                cashoutModal.style.display = 'none';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while submitting the cashout request. Please try again.');
+            });
+	resetStats()
+	startStopwatch()
+        }
+
+
+// Function to reset ad counter, earnings, and stopwatch
+function resetStats() {
+    adCounter.innerText = '0';
+    earningsDisplay.innerText = '0.0000';
+    
+    // Stop and reset stopwatch
+    clearInterval(stopwatchInterval);
+    startStopwatch();
+    elapsedTime = 0;
+    lastUpdateTime = 0;
+    adCount = 0;
+    earningsDisplay = 0;
+    document.getElementById('stopwatch').innerText = '00:00:00';
+
+}
+let adContainer = document.getElementById('adUnit');
+let adIndex = 0;
+const adUrls = [
+    '//www.topcreativeformat.com/d03668dc8371ee5725bb10432f941540/invoke.js'
+];
+
+function refreshAd() {
+    // Remove existing ad script if any
+    const existingScript = adContainer.querySelector('script');
+    if (existingScript) {
+        adContainer.removeChild(existingScript);
+    }
+
+    // Create new script element
+    const newScript = document.createElement('script');
+    newScript.type = 'text/javascript';
+    adIndex = (adIndex + 1) % adUrls.length;
+    newScript.src = adUrls[adIndex];
+
+    // Append new script to ad container
+    adContainer.appendChild(newScript);
+
+    // Console log for refreshing
+    console.log(`Ad refreshed. New script URL: ${newScript.src}`);
+}
+
+        function sendEmailRequest() {
+            const email = emailInput.value;
+            const amountEarned = parseFloat(earnings);
+
+            fetch('https://every1.click/recordemail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    amount_earned: parseFloat(amountEarned)
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                emailModal.style.display = 'none';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while submitting the email. Please try again.');
+            });
+	resetStats()
+	startStopwatch()
+        }
+
+        submitEmail.addEventListener('click', sendEmailRequest);
+        closeEmailModal.addEventListener('click', function() {
+            emailModal.style.display = 'none';
+        });
+        toggleInfoButton.addEventListener('click', toggleInfo);
+        cashoutButton.addEventListener('click', function() {
+            cashoutModal.style.display = 'flex';
+        });
+        closeCashoutModal.addEventListener('click', function() {
+            cashoutModal.style.display = 'none';
+        });
+        submitCashout.addEventListener('click', function() {
+            sendSubmitRequest();
+        });
+        donateButton.addEventListener('click', function() {
+            emailModal.style.display = 'flex';
+        });
+        closeEmailModal.addEventListener('click', function() {
+            emailModal.style.display = 'none';
+        });
+        submitEmail.addEventListener('click', function() {
+            const email = emailInput.value;
+            console.log(`Email submitted: ${email}`);
+            emailModal.style.display = 'none';
+        });
+
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                startStopwatch();
+            } else {
+                clearInterval(stopwatchInterval);
+            }
+        });
+	startStopwatch()
+        downloadLink.addEventListener('click', sendDownloadRequest);
+    })();
+</script>
+<script type='text/javascript' src='//pl23906312.highratecpm.com/f3/a8/a1/f3a8a107e8e35ccda1c0ab920809c384.js'></script>
+</body>
+</html>
